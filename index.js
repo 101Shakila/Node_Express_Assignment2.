@@ -19,7 +19,17 @@ const path = require('path'); // imports path module which helps with file & dir
 const eApp = express(); // creates an Express application under the eApp Object
 const port = 3000; // common line used to setup the port number ~ we need this for incoming requests
 const mongoose = require('mongoose'); //Import mongoose library
-//changes
+
+//we will save the connection string to our database to URI variable
+const URI = 'mongodb+srv://shakilamr124:node123@assignment2.a1fjcbl.mongodb.net/?retryWrites=true&w=majority&appName=Assignment2';
+mongoose.connect(URI)
+    .then(result =>
+        eApp.listen(port, () => {
+            console.log(`We are running port: ${port}`); //This will start the server and listen to connections from port 3000
+        }))
+    .catch(err => console.log(err));
+
+
 
 
 
@@ -60,10 +70,7 @@ eApp.get('/login', (req, res) => {
 })
 
 
-//This will start the server and listen to connections from port 3000
-eApp.listen(port, () => {
-    console.log(`We are running port: ${port}`);
-})
+
 
 //Assignment 2 - We will first Download MongoDB & Connect it. ( npm i mongoose )
 //
