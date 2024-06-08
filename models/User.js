@@ -22,7 +22,7 @@ const userCollection = new Schema({
     },
     //to nest the other cars section we have to do as below :
 
-    car_details: carInformationSchema
+    carDetails: carInformationSchema
 
 });
 
@@ -48,5 +48,5 @@ const carInformationSchema = new Schema({
 });
 
 //This will create a model names 'User' while using the schema defined above 'userCollection'
-const UserCol = mongoose.model('UserCol', userCollection);
-module.exports = UserCol;
+const User = mongoose.model('User', userCollection);
+module.exports = User;

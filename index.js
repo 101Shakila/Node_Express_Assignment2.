@@ -19,6 +19,12 @@ const path = require('path'); // imports path module which helps with file & dir
 const eApp = express(); // creates an Express application under the eApp Object
 const port = 3000; // common line used to setup the port number ~ we need this for incoming requests
 const mongoose = require('mongoose'); //Import mongoose library
+const User = require('models/User'); //Import User Model - can interact with user collection made in mongoDB
+
+
+// *MIDDLEWARE SETUP* --- we will use urlencoded to parse the forms submitted via HTTP POST  - the data parsed will be in req.body which we will use below ( for OBJECT user)
+eApp.use(express.urlencoded({ extended: true })) //we need to use extended: true as it uses 'qs' library which helps handle nested objects (user information also has car details when submitting form)
+
 
 //we will save the connection string to our database to URI variable
 const URI = 'mongodb+srv://shakilamr124:node123@assignment2.a1fjcbl.mongodb.net/?retryWrites=true&w=majority&appName=Assignment2';
@@ -69,6 +75,32 @@ eApp.get('/login', (req, res) => {
     res.render('login', { title: 'Login Page' });
 })
 
+//Whenever a post is made - the below will handle the form submission
+eApp.post('/g2', (req, res) => {
+    const user = new User({
+        firstName: req.body.firstName,
+        lastName: req.body.lastName,
+        licenseNo: req.body.licenseNo,
+        age: req.body.age,
+        dob: req.body.dob,
+        carDetails: {
+            make: req.body.make,
+            model: req.body.model,
+            year: req.body.year,
+            plateNumber: req.body.plateNumber
+        }
+    });
+
+    user.save()
+        .then(result => {
+            res.redirect('/g2');
+        })
+        .catch(err => {
+            console.log(err);
+            res.status(500).send('Internal Server Error');
+        });
+
+});
 
 
 
