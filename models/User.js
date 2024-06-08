@@ -20,10 +20,31 @@ const userCollection = new Schema({
         type: Number,
         required: true
     },
-    DOB: {
-        type: Date,
+    //to nest the other cars section we have to do as below :
+
+    car_details: carInformationSchema
+
+});
+
+
+const carInformationSchema = new Schema({
+    make: {
+        type: String,
         required: true
     },
+    model: {
+        type: String,
+        required: true
+    },
+    year: {
+        type: Number,
+        required: true
+    },
+    plateNumber: {
+        type: Number,
+        required: true
+    },
+
 });
 
 //This will create a model names 'User' while using the schema defined above 'userCollection'
