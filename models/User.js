@@ -3,30 +3,6 @@ const mongoose = require('mongoose'); //Import mongoose library
 const Schema = mongoose.Schema;  // This is reference to Schema Class ~ can create new Schema instances.
 
 //based on g2 test page - we will save the information the user input
-const userCollection = new Schema({
-    firstName: {
-        type: String,
-        required: true
-    },
-    LastName: {
-        type: String,
-        required: true
-    },
-    licenseNumber: {
-        type: String,
-        required: true
-    },
-    age: {
-        type: Number,
-        required: true
-    },
-    //to nest the other cars section we have to do as below :
-
-    carDetails: carInformationSchema
-
-});
-
-
 const carInformationSchema = new Schema({
     make: {
         type: String,
@@ -36,16 +12,41 @@ const carInformationSchema = new Schema({
         type: String,
         required: true
     },
-    year: {
+    carYear: {
         type: Number,
         required: true
     },
     plateNumber: {
         type: Number,
         required: true
-    },
+    }
 
 });
+
+
+const userCollection = new Schema({
+    firstName: {
+        type: String,
+        required: true
+    },
+    lastName: {
+        type: String,
+        required: true
+    },
+    licenseNumber: {
+        type: Number,
+        required: true
+    },
+    age: {
+        type: Number,
+        required: true
+    },
+    //to nest the other cars section we have to do as below :       
+    carDetails: carInformationSchema
+
+});
+
+
 
 //This will create a model names 'User' while using the schema defined above 'userCollection'
 const User = mongoose.model('User', userCollection);

@@ -19,7 +19,7 @@ const path = require('path'); // imports path module which helps with file & dir
 const eApp = express(); // creates an Express application under the eApp Object
 const port = 3000; // common line used to setup the port number ~ we need this for incoming requests
 const mongoose = require('mongoose'); //Import mongoose library
-const User = require('models/User'); //Import User Model - can interact with user collection made in mongoDB
+const User = require('./models/User'); //Import User Model - can interact with user collection made in mongoDB
 
 
 // *MIDDLEWARE SETUP* --- we will use urlencoded to parse the forms submitted via HTTP POST  - the data parsed will be in req.body which we will use below ( for OBJECT user)
@@ -33,7 +33,7 @@ mongoose.connect(URI)
         eApp.listen(port, () => {
             console.log(`We are running port: ${port}`); //This will start the server and listen to connections from port 3000
         }))
-    .catch(err => console.log(err));
+    .catch(err => console.log("err"));
 
 
 
@@ -77,16 +77,18 @@ eApp.get('/login', (req, res) => {
 
 //Whenever a post is made - the below will handle the form submission
 eApp.post('/g2', (req, res) => {
+
+    console.log(req.body); // Log the request body to check the incoming data
+
     const user = new User({
         firstName: req.body.firstName,
         lastName: req.body.lastName,
-        licenseNo: req.body.licenseNo,
+        licenseNumber: req.body.licenseNumber,
         age: req.body.age,
-        dob: req.body.dob,
         carDetails: {
             make: req.body.make,
             model: req.body.model,
-            year: req.body.year,
+            carYear: req.body.carYear,
             plateNumber: req.body.plateNumber
         }
     });
@@ -101,6 +103,61 @@ eApp.post('/g2', (req, res) => {
         });
 
 });
+
+eApp.get('/g', (req, res) => {
+    const licenseNumber = req.query.licenseNumber;
+
+    if (licenseNumber) {
+        User.findOne({ licenseNumber: licenseNumber })
+            .then(user => {
+                if (user) {
+                    res.render('g', { title: 'G Page', user: user });
+                } else {
+                    res.render('g', { title: 'G Page', message: 'No User Found' })
+                }
+            })
+            .then(savedUser => {
+                if (savedUser) {
+                    res.render('g', { title: 'G Page', user: savedUser, message: 'New Car Information Saved' });
+                }
+            })
+            .catch(err => {
+                console.log(err);
+                res.status(500).send('Internal Server Error')
+            });
+    }
+
+});
+
+eApp.post('/g', (req, res) => {
+    const licenseNumber = req.body.licenseNumber;
+
+    User.findOne({ licenseNumber: licenseNumber })
+        .then(user => {
+            if (user) {
+                user.carDetails.make = req.body.make;
+                user.carDetails.model = req.body.model;
+                user.carDetails.carYear = req.body.carYear;
+                user.carDetails.plateNumber = req.body.plateNumber;
+
+                return user.save();
+            } else {
+                res.render('g', { title: 'G Page', message: 'No User Found', goToG2: true });
+            }
+        })
+        .then(savedUser => {
+            if (savedUser) {
+                res.render('g', { title: 'G Page', user: savedUser, message: 'Car information updated successfully' });
+            }
+        })
+        .catch(err => {
+            console.error(err);
+            res.status(500).send('Internal Server Error');
+        });
+});
+
+
+
 
 
 
