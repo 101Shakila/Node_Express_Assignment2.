@@ -33,7 +33,7 @@ mongoose.connect(URI)
         eApp.listen(port, () => {
             console.log(`We are running port: ${port}`); //This will start the server and listen to connections from port 3000
         }))
-    .catch(err => console.log("err"));
+    .catch(err => console.log("i guess its not running"));
 
 
 
@@ -58,11 +58,30 @@ eApp.get('/dashboard', (req, res) => {
     res.render('dashboard', { title: 'dashboard Page' });
 })
 
-
 // G Page
 eApp.get('/G', (req, res) => {
-    res.render('g', { title: 'G Page' });
-})
+    const licenseNumber = req.query.licenseNumber;
+    if (licenseNumber) {
+        User.findOne({ licenseNumber: licenseNumber })
+            .then(user => {
+                if (user) {
+                    // User found, render page with user data
+                    res.render('g', { title: 'G Page', user: user, message: null, goToG2: false });
+                } else {
+                    // No user found, render page with message and option to go to G2 page
+                    res.render('g', { title: 'G Page', message: 'No User Found', goToG2: true, user: null });
+                }
+            })
+            .catch(err => {
+                console.log(err);
+                res.status(500).send('Internal Server Error')
+            });
+    }
+    else {
+        // Render the page without any user information
+        res.render('g', { title: 'G Page', user: null, message: null, goToG2: false });
+    }
+});
 
 // G2 Page
 eApp.get('/G2', (req, res) => {
@@ -104,31 +123,8 @@ eApp.post('/g2', (req, res) => {
 
 });
 
-eApp.get('/g', (req, res) => {
-    const licenseNumber = req.query.licenseNumber;
 
-    if (licenseNumber) {
-        User.findOne({ licenseNumber: licenseNumber })
-            .then(user => {
-                if (user) {
-                    res.render('g', { title: 'G Page', user: user });
-                } else {
-                    res.render('g', { title: 'G Page', message: 'No User Found' })
-                }
-            })
-            .then(savedUser => {
-                if (savedUser) {
-                    res.render('g', { title: 'G Page', user: savedUser, message: 'New Car Information Saved' });
-                }
-            })
-            .catch(err => {
-                console.log(err);
-                res.status(500).send('Internal Server Error')
-            });
-    }
-
-});
-
+// G Page - POST method for updating car information
 eApp.post('/g', (req, res) => {
     const licenseNumber = req.body.licenseNumber;
 
@@ -142,6 +138,7 @@ eApp.post('/g', (req, res) => {
 
                 return user.save();
             } else {
+                // No user found, render with message and option to go to G2 page
                 res.render('g', { title: 'G Page', message: 'No User Found', goToG2: true });
             }
         })

@@ -1,6 +1,7 @@
 html,
 body {
     height: 100%;
+    transition: 0.5s;
 }
 
 body {
@@ -37,4 +38,18 @@ body {
     flex-direction: column;
     justify-content: center;
     align-items: center;
+}
+
+.border {
+    margin: 10px;
+}
+
+.gcontainer {
+    width: 80%;
+    transition: 1s;
+}
+
+.gcontainer:hover {
+    background-color: rgb(79, 118, 138);
+    transition: 0.5s;
 }

@@ -2,7 +2,7 @@
 
     <section class="center-content">
         <h1>G PAGE</h1>
-        <div class="border border-4 p-4">
+        <div class="gcontainer border border-4 p-4">
             <form action="/g" method="GET">
                 <div class="mb-4">
                     <h2 id="content-title">Enter License Number</h2>
@@ -13,5 +13,44 @@
 
                 <button class="btn btn-secondary">SUBMIT</button>
             </form>
+
+        </div>
+
+        <div class="gcontainer border border-4 p-4">
+            <div class="mb-4">
+                <div class="col-md-6">
+
+                    <% if (message) { %>
+                        <p>
+                        <h2 id="content-title">
+                            <%= message %>
+                        </h2>
+                        </p>
+                        <% } %>
+                            <% if (goToG2) { %>
+                                <a href="/g2" class="btn btn-primary">Go to G2 Page</a>
+                                <% } %>
+
+                                    <% if (user) { %>
+                                        <h2>User Information</h2>
+                                        <p><strong>First Name:</strong>
+                                            <%= user.firstName %>
+                                        </p>
+                                        <p><strong>Last Name:</strong>
+                                            <%= user.lastName %>
+                                        </p>
+                                        <p><strong>license Number:</strong>
+                                            <%= user.licenseNumber %>
+                                        </p>
+                                        <p><strong>Age:</strong>
+                                            <%= user.age %>
+                                        </p>
+                                        <h2>Car Information</h2>
+                                        <p><strong>Make:</strong>
+                                            <%= user.carDetails.make %>
+                                        </p>
+                                        <% } %>
+                </div>
+            </div>
         </div>
     </section>
