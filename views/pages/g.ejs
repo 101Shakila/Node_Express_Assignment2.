@@ -46,9 +46,30 @@
                                             <%= user.age %>
                                         </p>
                                         <h2>Car Information</h2>
-                                        <p><strong>Make:</strong>
-                                            <%= user.carDetails.make %>
-                                        </p>
+                                        <form action="/g" method="POST">
+                                            <input type="hidden" name="licenseNumber" value="<%= user.licenseNumber %>">
+                                            <div class="mb-3">
+                                                <label for="make" class="form-label">Make</label>
+                                                <input type="text" class="form-control" id="make" name="make"
+                                                    value="<%= user.carDetails.make %>">
+                                            </div>
+                                            <div class="mb-3">
+                                                <label for="model" class="form-label">Model</label>
+                                                <input type="text" class="form-control" id="model" name="model"
+                                                    value="<%= user.carDetails.model %>">
+                                            </div>
+                                            <div class="mb-3">
+                                                <label for="carYear" class="form-label">Car Year</label>
+                                                <input type="text" class="form-control" id="carYear" name="carYear"
+                                                    value="<%= user.carDetails.carYear %>">
+                                            </div>
+                                            <div class="mb-3">
+                                                <label for="plateNumber" class="form-label">Plate Number</label>
+                                                <input type="text" class="form-control" id="plateNumber"
+                                                    name="plateNumber" value="<%= user.carDetails.plateNumber %>">
+                                            </div>
+                                            <button type="submit" class="btn btn-secondary">UPDATE</button>
+                                        </form>
                                         <% } %>
                 </div>
             </div>
