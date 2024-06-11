@@ -45,6 +45,9 @@
                                         <p><strong>Age:</strong>
                                             <%= user.age %>
                                         </p>
+                                        <p><strong>DOB:</strong>
+                                            <%= user.dob %>
+                                        </p>
                                         <h2>Car Information</h2>
                                         <form action="/g" method="POST">
                                             <input type="hidden" name="licenseNumber" value="<%= user.licenseNumber %>">

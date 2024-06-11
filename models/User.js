@@ -41,6 +41,10 @@ const userCollection = new Schema({
         type: Number,
         required: true
     },
+    dob: {
+        type: Date,
+        required: true
+    },
     //to nest the other cars section we have to do as below :       
     carDetails: carInformationSchema
 

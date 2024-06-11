@@ -104,6 +104,7 @@ eApp.post('/g2', (req, res) => {
         lastName: req.body.lastName,
         licenseNumber: req.body.licenseNumber,
         age: req.body.age,
+        dob: req.body.dob,
         carDetails: {
             make: req.body.make,
             model: req.body.model,
