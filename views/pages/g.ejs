@@ -3,11 +3,11 @@
     <section class="center-content">
         <h1>G PAGE</h1>
         <div class="gcontainer border border-4 p-4">
-            <form action="/g" method="GET">
+            <form id="checkData" action="/g" method="GET" onsubmit="return validationCheck()">
                 <div class="mb-4">
                     <h2 id="content-title">Enter License Number</h2>
                     <div class="col-md-6">
-                        <input name="licenseNumber" type="text" class="form-control">
+                        <input name="licenseNumber" type="text" class="form-control" required>
                     </div>
                 </div>
 
@@ -22,13 +22,15 @@
 
                     <% if (message) { %>
                         <p>
-                        <h2 id="content-title">
+                        <h2 id="content-title" style="color: rgb(123, 220, 58)">
                             <%= message %>
                         </h2>
                         </p>
                         <% } %>
                             <% if (goToG2) { %>
-                                <a href="/g2" class="btn btn-primary">Go to G2 Page</a>
+                                <a href="/g2" class="btn btn-primary"
+                                    style="background-color: rgb(78, 137, 38); border-color: rgb(97, 168, 51); color: white;">Go
+                                    to G2 Page</a>
                                 <% } %>
 
                                     <% if (user) { %>
@@ -78,3 +80,15 @@
             </div>
         </div>
     </section>
+
+    <script>
+        function validationCheck() {
+            const licenseNumber = document.getElementById("licenseNumber").value;
+            if (!licenseNumber.match(/^\d+$/)) {
+                alert('License should be numeric')
+                return false;
+            }
+            return true;
+
+        }
+    </script>

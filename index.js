@@ -53,6 +53,11 @@ eApp.get('/', (req, res) => {
     res.render('index', { title: 'Home Page' });
 });
 
+// Login
+eApp.get('/login', (req, res) => {
+    res.render('login', { title: 'Login Page' });
+})
+
 // Dashboard
 eApp.get('/dashboard', (req, res) => {
     res.render('dashboard', { title: 'dashboard Page' });
@@ -61,7 +66,12 @@ eApp.get('/dashboard', (req, res) => {
 // G Page
 eApp.get('/G', (req, res) => {
     const licenseNumber = req.query.licenseNumber;
+
     if (licenseNumber) {
+        // Validate licenseNumber before querying the database
+        if (!/^\d+$/.test(licenseNumber)) {
+            return res.render('g', { title: 'G Page', message: 'License should be numeric', goToG2: false, user: null });
+        }
         User.findOne({ licenseNumber: licenseNumber })
             .then(user => {
                 if (user) {
@@ -81,47 +91,6 @@ eApp.get('/G', (req, res) => {
         // Render the page without any user information
         res.render('g', { title: 'G Page', user: null, message: null, goToG2: false });
     }
-});
-
-// G2 Page
-eApp.get('/G2', (req, res) => {
-    res.render('g2', { title: 'G2 Page' });
-})
-
-
-// Login
-eApp.get('/login', (req, res) => {
-    res.render('login', { title: 'Login Page' });
-})
-
-//Whenever a post is made - the below will handle the form submission
-eApp.post('/g2', (req, res) => {
-
-    console.log(req.body); // Log the request body to check the incoming data
-
-    const user = new User({
-        firstName: req.body.firstName,
-        lastName: req.body.lastName,
-        licenseNumber: req.body.licenseNumber,
-        age: req.body.age,
-        dob: req.body.dob,
-        carDetails: {
-            make: req.body.make,
-            model: req.body.model,
-            carYear: req.body.carYear,
-            plateNumber: req.body.plateNumber
-        }
-    });
-
-    user.save()
-        .then(result => {
-            res.redirect('/g2');
-        })
-        .catch(err => {
-            console.log(err);
-            res.status(500).send('Internal Server Error');
-        });
-
 });
 
 
@@ -145,7 +114,7 @@ eApp.post('/g', (req, res) => {
         })
         .then(savedUser => {
             if (savedUser) {
-                res.render('g', { title: 'G Page', user: savedUser, message: 'Car information updated successfully', goToG2: false });
+                res.render('g', { title: 'G Page', user: savedUser, message: '- Updated successfully -', goToG2: false });
             }
         })
         .catch(err => {
@@ -155,9 +124,39 @@ eApp.post('/g', (req, res) => {
 });
 
 
+// G2 Page
+eApp.get('/G2', (req, res) => {
+    res.render('g2', { title: 'G2 Page', message: null });
+})
 
 
+//G2 Whenever a post is made - the below will handle the form submission
+eApp.post('/g2', (req, res) => {
 
+    console.log(req.body); // Log the request body to check the incoming data
 
-//Assignment 2 - We will first Download MongoDB & Connect it. ( npm i mongoose )
-//
+    const user = new User({
+        firstName: req.body.firstName,
+        lastName: req.body.lastName,
+        licenseNumber: req.body.licenseNumber,
+        age: req.body.age,
+        dob: req.body.dob,
+        carDetails: {
+            make: req.body.make,
+            model: req.body.model,
+            carYear: req.body.carYear,
+            plateNumber: req.body.plateNumber
+        }
+    });
+
+    user.save()
+        .then(result => {
+            //res.redirect('/g2');
+            res.render('g2', { title: 'G2 Page', message: '- Updated New Client -' });
+        })
+        .catch(err => {
+            console.log(err);
+            res.status(500).send('Internal Server Error');
+        });
+
+});
