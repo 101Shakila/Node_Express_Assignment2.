@@ -145,7 +145,7 @@ eApp.post('/g', (req, res) => {
         })
         .then(savedUser => {
             if (savedUser) {
-                res.render('g', { title: 'G Page', user: savedUser, message: 'Car information updated successfully' });
+                res.render('g', { title: 'G Page', user: savedUser, message: 'Car information updated successfully', goToG2: false });
             }
         })
         .catch(err => {
