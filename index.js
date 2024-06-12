@@ -122,7 +122,7 @@ eApp.post('/g', (req, res) => {
         })
         .then(savedUser => {
             if (savedUser) {
-                res.render('g', { title: 'G Page', user: savedUser, message: '- Updated successfully -', goToG2: false });
+                res.render('g', { title: 'G Page', user: savedUser, message: 'Updated successfully', goToG2: false });
             }
         })
         .catch(err => {
@@ -161,7 +161,7 @@ eApp.post('/g2', (req, res) => {
     user.save()
         .then(result => {
             //res.redirect('/g2');
-            res.render('g2', { title: 'G2 Page', message: '- Updated New Client -' });
+            res.render('g2', { title: 'G2 Page', message: 'Updated New Client' });
         })
         .catch(err => {
             console.log(err);
