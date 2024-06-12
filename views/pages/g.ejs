@@ -13,7 +13,6 @@
 
                 <button class="btn btn-secondary">SUBMIT</button>
             </form>
-
         </div>
 
         <div class="gcontainer border border-4 p-4">
@@ -21,18 +20,15 @@
                 <div class="col-md-6">
 
                     <% if (message) { %>
-                        <p>
                         <h2 id="content-title" style="color: rgb(123, 220, 58)">
                             <%= message %>
                         </h2>
-                        </p>
                         <% } %>
                             <% if (goToG2) { %>
                                 <a href="/g2" class="btn btn-primary"
                                     style="background-color: rgb(78, 137, 38); border-color: rgb(97, 168, 51); color: white;">Go
                                     to G2 Page</a>
                                 <% } %>
-
                                     <% if (user) { %>
                                         <h2>User Information</h2>
                                         <p><strong>First Name:</strong>
@@ -41,17 +37,18 @@
                                         <p><strong>Last Name:</strong>
                                             <%= user.lastName %>
                                         </p>
-                                        <p><strong>license Number:</strong>
+                                        <p><strong>License Number:</strong>
                                             <%= user.licenseNumber %>
                                         </p>
                                         <p><strong>Age:</strong>
                                             <%= user.age %>
                                         </p>
                                         <p><strong>DOB:</strong>
-                                            <%= user.dob %>
+                                            <%= user.dob.toDateString() %>
                                         </p>
                                         <h2>Car Information</h2>
-                                        <form action="/g" method="POST">
+                                        <form id="checkUpdate" action="/g" method="POST"
+                                            onsubmit="return updateCheck()">
                                             <input type="hidden" name="licenseNumber" value="<%= user.licenseNumber %>">
                                             <div class="mb-3">
                                                 <label for="make" class="form-label">Make</label>
@@ -83,12 +80,37 @@
 
     <script>
         function validationCheck() {
-            const licenseNumber = document.getElementById("licenseNumber").value;
+            const licenseNumber = document.getElementsByName("licenseNumber")[0].value;
             if (!licenseNumber.match(/^\d+$/)) {
-                alert('License should be numeric')
+                alert("License number should be numeric.");
                 return false;
             }
             return true;
+        }
 
+        function updateCheck() {
+            const make = document.getElementById("make").value;
+            const model = document.getElementById("model").value;
+            const carYear = document.getElementById("carYear").value;
+            const plateNumber = document.getElementById("plateNumber").value;
+
+            if (!make.match(/^[A-Za-z\s]{2,50}$/)) {
+                alert("Make should be alphabetic and between 2 to 50 characters.");
+                return false;
+            }
+            if (!model.match(/^[A-Za-z\s]{2,50}$/)) {
+                alert("Model should be alphabetic and between 2 to 50 characters.");
+                return false;
+            }
+            if (!carYear.match(/^\d{4}$/)) {
+                alert("Car year should be a 4-digit number.");
+                return false;
+            }
+            if (!plateNumber.match(/^\w+$/)) {
+                alert("Plate number should be alphanumeric.");
+                return false;
+            }
+
+            return true;
         }
     </script>

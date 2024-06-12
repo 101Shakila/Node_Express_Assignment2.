@@ -97,6 +97,14 @@ eApp.get('/G', (req, res) => {
 // G Page - POST method for updating car information
 eApp.post('/g', (req, res) => {
     const licenseNumber = req.body.licenseNumber;
+    const make = req.body.make;
+    const model = req.body.model;
+    const carYear = req.body.carYear;
+    const plateNumber = req.body.plateNumber;
+
+    if (!licenseNumber.match(/^\d+$/) || !make.match(/^[A-Za-z\s]{1,50}$/) || !model.match(/^[A-Za-z\s]{1,50}$/) || !carYear.match(/^\d{4}$/) || !plateNumber.match(/^\w+$/)) {
+        return res.render('g', { title: 'G Page', message: 'Invalid input', goToG2: false, user: null });
+    }
 
     User.findOne({ licenseNumber: licenseNumber })
         .then(user => {
@@ -132,6 +140,7 @@ eApp.get('/G2', (req, res) => {
 
 //G2 Whenever a post is made - the below will handle the form submission
 eApp.post('/g2', (req, res) => {
+
 
     console.log(req.body); // Log the request body to check the incoming data
 
