@@ -85,23 +85,33 @@ eApp.get('/dashboard', (req, res) => {
 eApp.get('/G', (req, res) => {
     const licenseNumber = req.query.licenseNumber;
 
+
     if (licenseNumber) {
         // Validate licenseNumber before querying the database
-        if (!/^\d+$/.test(licenseNumber)) {
-            return res.render('g', { title: 'G Page', message: 'License should be numeric', goToG2: false, user: null });
+        if (!/^[a-zA-Z0-9]+$/.test(licenseNumber)) {
+            return res.render('g', { title: 'G Page', message: 'License should be alphanumeric', goToG2: false, user: null });
         }
-        // User.fineOne - uses mongoose findOne method to search the database for a user with the specified LicenseNumber
-        User.find({ licenseNumber: licenseNumber })
-            .then(users => {
-                const user = users.find(async user => await bcrypt.compare(licenseNumber, user.licenseNumber));
+
+        //So here we had to change how we validate the license number  - the find  method expects a return of boolean - not a asynchronous one that returns a promise.
+        User.find()
+            .then(async users => {
+                let user;
+                for (const u of users) {
+                    const matchThis = await bcrypt.compare(licenseNumber, u.licenseNumber);
+                    if (matchThis) {
+                        user = u;
+                        break;
+                    }
+                }
+
                 if (user) {
-                    // User found, render page with user data
                     res.render('g', { title: 'G Page', user: user, message: null, goToG2: false });
                 } else {
-                    // No user found, render page with message and option to go to G2 page
                     res.render('g', { title: 'G Page', message: 'No User Found', goToG2: true, user: null });
                 }
             })
+
+
             .catch(err => {
                 console.log(err);
                 res.status(500).send('Internal Server xError')

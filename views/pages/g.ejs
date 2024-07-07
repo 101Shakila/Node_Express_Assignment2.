@@ -81,14 +81,17 @@
     <script>
         //This is just to check the validation for license Number
         function validationCheck() {
+            console.log("okay so it did go through validationxxx")
             const licenseNumber = document.getElementsByName("licenseNumber")[0].value;
-            if (!licenseNumber.match(/^\d+$/)) { //Checks if the license number is Numeric
-                alert("License number should be numeric.");
+            if (!licenseNumber.match(/^[a-zA-Z0-9]+$/)) { // Checks if the license number is alphanumeric
+                alert("License number should be alphanumeric.");
                 return false; // returning false stops form from being submitted
             }
             // This will allow form to be submitted which means it will be checked by server side.
+            console.log("okay so it did go through validation")
             return true;
         }
+
 
         function updateCheck() {
             const make = document.getElementById("make").value;

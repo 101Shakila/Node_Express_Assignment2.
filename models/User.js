@@ -1,6 +1,7 @@
 //Here we have to define the User Collection Schema
 const mongoose = require('mongoose'); //Import mongoose library
 const Schema = mongoose.Schema;  // This is reference to Schema Class ~ can create new Schema instances.
+const bcrypt = require('bcrypt'); //Import bcrypt Library into our app - Helps hash passwords
 
 //based on g2 test page - we will save the information the user input
 const carInformationSchema = new Schema({
@@ -59,10 +60,8 @@ userCollection.pre('save', async function (callback) { //async makes the functio
         if (this.isModified('licenseNumber')) { // We need to check if licenseNumber has been modified and AVOID re-hashing it.
             const salt = await bcrypt.genSalt(10); //genSalt adds randomness to the encryption making it harder to hack. - await is used here to make sure to wait for async hash to complete.
             this.licenseNumber = await bcrypt.hash(this.licenseNumber, salt);
-            console.log('okay it worked here! xxx');
         }
         callback(); //callback is needed here to make sure the middleware stack continues and saves the data in the database.
-        console.log('okay it worked here! xxx2');
     } catch (error) {
         callback(error);
     }
