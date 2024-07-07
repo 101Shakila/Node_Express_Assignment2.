@@ -53,3 +53,7 @@ body {
     background-color: rgb(79, 118, 138);
     transition: 0.5s;
 }
+
+.card-body {
+    background-color: rgb(131, 154, 166);
+}

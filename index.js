@@ -96,10 +96,10 @@ eApp.get('/G', (req, res) => {
         User.find()
             .then(async users => {
                 let user;
-                for (const u of users) {
+                for (const u of users) { //literating through each user object - U represents a user in the database.
                     const matchThis = await bcrypt.compare(licenseNumber, u.licenseNumber);
                     if (matchThis) {
-                        user = u;
+                        user = u; //the user we captured from database which will be rendered below.
                         break;
                     }
                 }
@@ -132,8 +132,7 @@ eApp.post('/g', (req, res) => {
     const carYear = req.body.carYear;
     const plateNumber = req.body.plateNumber;
 
-    if (!licenseNumber.match(/^\d+$/) || !make.match(/^[A-Za-z\s]{1,50}$/) || !model.match(/^[A-Za-z\s]{1,50}$/) || !carYear.match(/^\d{4}$/) || !plateNumber.match(/^[a-zA-Z0-9]+$/)) {
-        console.log("testing hereee!");
+    if (!make.match(/^[A-Za-z\s]{1,50}$/) || !model.match(/^[A-Za-z\s]{1,50}$/) || !carYear.match(/^\d{4}$/) || !plateNumber.match(/^[a-zA-Z0-9]+$/)) {
         return res.render('g', { title: 'G Page', message: 'Invalid input', goToG2: false, user: null });
     }
     // User.fineOne - uses mongoose findOne method to search the database for a user with the specified LicenseNumber

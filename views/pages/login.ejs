@@ -1,6 +1,65 @@
 <%- include('../layout', { title: 'login' }) %>
 
+
+    <!-- EDIT THE LAYOUT AND COLORS-->
     <section class="center-content">
-        <h2 id="content-title">Login</h2>
-        <p class="bg-warning text-dark p-3">Under Construction</p>
-    </section>a
+        <div class="container mt-5">
+            <div class="row justify-content-center">
+                <!-- Login Form -->
+                <div class="col-md-6 mb-4">
+                    <div class="card shadow">
+                        <div class="card-body">
+                            <h2 class="card-title mb-4">Login</h2>
+                            <form action="/login" method="POST">
+                                <div class="mb-3">
+                                    <label for="loginUsername" class="form-label">Username</label>
+                                    <input type="text" class="form-control" id="loginUsername" name="username" required>
+                                </div>
+                                <div class="mb-3">
+                                    <label for="loginPassword" class="form-label">Password</label>
+                                    <input type="password" class="form-control" id="loginPassword" name="password"
+                                        required>
+                                </div>
+                                <button type="submit" class="btn btn-primary">Login</button>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Signup Form -->
+                <div class="col-md-6 mb-4">
+                    <div class="card shadow">
+                        <div class="card-body">
+                            <h2 class="card-title mb-4">Signup</h2>
+                            <form action="/signup" method="POST">
+                                <div class="mb-3">
+                                    <label for="signupUsername" class="form-label">Username</label>
+                                    <input type="text" class="form-control" id="signupUsername" name="username"
+                                        required>
+                                </div>
+                                <div class="mb-3">
+                                    <label for="signupPassword" class="form-label">Password</label>
+                                    <input type="password" class="form-control" id="signupPassword" name="password"
+                                        required>
+                                </div>
+                                <div class="mb-3">
+                                    <label for="repeatPassword" class="form-label">Repeat Password</label>
+                                    <input type="password" class="form-control" id="repeatPassword"
+                                        name="repeatPassword" required>
+                                </div>
+                                <div class="mb-3">
+                                    <label for="userType" class="form-label">User Type</label>
+                                    <select class="form-select" id="userType" name="userType" required>
+                                        <option value="Driver">Driver</option>
+                                        <option value="Examiner">Examiner</option>
+                                        <option value="Admin">Admin</option>
+                                    </select>
+                                </div>
+                                <button type="submit" class="btn btn-secondary">Signup</button>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
