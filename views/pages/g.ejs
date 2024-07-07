@@ -62,12 +62,12 @@
                                             </div>
                                             <div class="mb-3">
                                                 <label for="carYear" class="form-label">Car Year</label>
-                                                <input type="text" class="form-control" id="carYear" name="carYear"
+                                                <input type="number" class="form-control" id="carYear" name="carYear"
                                                     value="<%= user.carDetails.carYear %>">
                                             </div>
                                             <div class="mb-3">
                                                 <label for="plateNumber" class="form-label">Plate Number</label>
-                                                <input type="text" class="form-control" id="plateNumber"
+                                                <input type="number" class="form-control" id="plateNumber"
                                                     name="plateNumber" value="<%= user.carDetails.plateNumber %>">
                                             </div>
                                             <button type="submit" class="btn btn-secondary">UPDATE</button>
@@ -79,12 +79,14 @@
     </section>
 
     <script>
+        //This is just to check the validation for license Number
         function validationCheck() {
             const licenseNumber = document.getElementsByName("licenseNumber")[0].value;
-            if (!licenseNumber.match(/^\d+$/)) {
+            if (!licenseNumber.match(/^\d+$/)) { //Checks if the license number is Numeric
                 alert("License number should be numeric.");
-                return false;
+                return false; // returning false stops form from being submitted
             }
+            // This will allow form to be submitted which means it will be checked by server side.
             return true;
         }
 
@@ -94,6 +96,8 @@
             const carYear = document.getElementById("carYear").value;
             const plateNumber = document.getElementById("plateNumber").value;
 
+
+            //after capturing the data from above we will validate each one of them
             if (!make.match(/^[A-Za-z\s]{2,50}$/)) {
                 alert("Make should be alphabetic and between 2 to 50 characters.");
                 return false;
@@ -106,7 +110,7 @@
                 alert("Car year should be a 4-digit number.");
                 return false;
             }
-            if (!plateNumber.match(/^\w+$/)) {
+            if (!plateNumber.match(/^[a-zA-Z0-9]+$/)) {
                 alert("Plate number should be alphanumeric.");
                 return false;
             }

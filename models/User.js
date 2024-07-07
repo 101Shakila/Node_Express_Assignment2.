@@ -17,7 +17,7 @@ const carInformationSchema = new Schema({
         required: true
     },
     plateNumber: {
-        type: Number,
+        type: String, //Converted into string for flexibility.
         required: true
     }
 
@@ -34,7 +34,7 @@ const userCollection = new Schema({
         required: true
     },
     licenseNumber: {
-        type: Number,
+        type: String, //When it comes to HASHING - we need it to be string because hash function output is STRING.
         required: true
     },
     age: {
@@ -49,6 +49,26 @@ const userCollection = new Schema({
     carDetails: carInformationSchema
 
 });
+
+//To improve security - we will ENCRYPT the license number before saving it into the system.
+//middleware refers to functions that run during the lifecycle of a request to a server, but before the final request handler.
+//Below will be treated as a pre-save middlewear for userCollection 
+userCollection.pre('save', async function (callback) { //async makes the function asynchronous
+
+    try {
+        if (this.isModified('licenseNumber')) { // We need to check if licenseNumber has been modified and AVOID re-hashing it.
+            const salt = await bcrypt.genSalt(10); //genSalt adds randomness to the encryption making it harder to hack. - await is used here to make sure to wait for async hash to complete.
+            this.licenseNumber = await bcrypt.hash(this.licenseNumber, salt);
+            console.log('okay it worked here! xxx');
+        }
+        callback(); //callback is needed here to make sure the middleware stack continues and saves the data in the database.
+        console.log('okay it worked here! xxx2');
+    } catch (error) {
+        callback(error);
+    }
+});
+
+
 
 
 

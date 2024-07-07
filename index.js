@@ -1,17 +1,35 @@
+//Assignment 1
 //Alphin Tom - Installation of express, node creation, and testing if linkage is proper
 //Rushang Panchal - Foundation of express and and pathing seen in index.js
 //Shakila Samaradiwakara - Setup EJS files and layout design
 
 
+//Assignment 2
+//Alphin Tom - setup Datbase connection in index.js and made it connection works for both g and g2
+//Rushang Panchal - fixed g2 file for gathering new data to input into database
+//Shakila Samaradiwakara - Setup Users.js and g.ejs file ( for post and get )
+
+//Assignment 3
+
+
+
+
+
+
+//How to Run notes below!!!
+
 //The below is all done through terminal
 // ~ To create Node.js project and initialize it ~ it will have package.json file with required settings
 // RUN ~ npm init ~ into assignment 1 folder
-
 //Install Express framework with below code
 //npm install express
-
 // Next create the main file
 //RUN touch index.js
+//npm install bcrypt - This library is used for encryption ( HASH ).
+
+
+
+
 
 //Next inside this index.js file we will setup Express to route the mentioned sections
 const express = require('express'); // imports Express module
@@ -20,7 +38,7 @@ const eApp = express(); // creates an Express application under the eApp Object
 const port = 3000; // common line used to setup the port number ~ we need this for incoming requests
 const mongoose = require('mongoose'); //Import mongoose library
 const User = require('./models/User'); //Import User Model - can interact with user collection made in mongoDB
-
+const bcrypt = require('bcrypt'); //Import bcrypt Library into our app - Helps hash passwords
 
 // *MIDDLEWARE SETUP* --- we will use urlencoded to parse the forms submitted via HTTP POST  - the data parsed will be in req.body which we will use below ( for OBJECT user)
 eApp.use(express.urlencoded({ extended: true })) //we need to use extended: true as it uses 'qs' library which helps handle nested objects (user information also has car details when submitting form)
@@ -63,7 +81,7 @@ eApp.get('/dashboard', (req, res) => {
     res.render('dashboard', { title: 'dashboard Page' });
 })
 
-// G Page
+// G Page - can't have 2 get posts with same name - hence put in the 2nd get functionality inside here.
 eApp.get('/G', (req, res) => {
     const licenseNumber = req.query.licenseNumber;
 
@@ -72,8 +90,10 @@ eApp.get('/G', (req, res) => {
         if (!/^\d+$/.test(licenseNumber)) {
             return res.render('g', { title: 'G Page', message: 'License should be numeric', goToG2: false, user: null });
         }
-        User.findOne({ licenseNumber: licenseNumber })
-            .then(user => {
+        // User.fineOne - uses mongoose findOne method to search the database for a user with the specified LicenseNumber
+        User.find({ licenseNumber: licenseNumber })
+            .then(users => {
+                const user = users.find(async user => await bcrypt.compare(licenseNumber, user.licenseNumber));
                 if (user) {
                     // User found, render page with user data
                     res.render('g', { title: 'G Page', user: user, message: null, goToG2: false });
@@ -84,7 +104,7 @@ eApp.get('/G', (req, res) => {
             })
             .catch(err => {
                 console.log(err);
-                res.status(500).send('Internal Server Error')
+                res.status(500).send('Internal Server xError')
             });
     }
     else {
@@ -102,10 +122,11 @@ eApp.post('/g', (req, res) => {
     const carYear = req.body.carYear;
     const plateNumber = req.body.plateNumber;
 
-    if (!licenseNumber.match(/^\d+$/) || !make.match(/^[A-Za-z\s]{1,50}$/) || !model.match(/^[A-Za-z\s]{1,50}$/) || !carYear.match(/^\d{4}$/) || !plateNumber.match(/^\w+$/)) {
+    if (!licenseNumber.match(/^\d+$/) || !make.match(/^[A-Za-z\s]{1,50}$/) || !model.match(/^[A-Za-z\s]{1,50}$/) || !carYear.match(/^\d{4}$/) || !plateNumber.match(/^[a-zA-Z0-9]+$/)) {
+        console.log("testing hereee!");
         return res.render('g', { title: 'G Page', message: 'Invalid input', goToG2: false, user: null });
     }
-
+    // User.fineOne - uses mongoose findOne method to search the database for a user with the specified LicenseNumber
     User.findOne({ licenseNumber: licenseNumber })
         .then(user => {
             if (user) {
