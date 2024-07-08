@@ -1,6 +1,5 @@
 <%- include('../layout', { title: 'login' }) %>
 
-
     <!-- EDIT THE LAYOUT AND COLORS-->
     <section class="center-content">
         <div class="container mt-5">
@@ -10,18 +9,24 @@
                     <div class="card shadow">
                         <div class="card-body">
                             <h2 class="card-title mb-4">Login</h2>
-                            <form action="/login" method="POST">
-                                <div class="mb-3">
-                                    <label for="loginUsername" class="form-label">Username</label>
-                                    <input type="text" class="form-control" id="loginUsername" name="username" required>
+                            <% if (message) { %>
+                                <div class="alert alert-info" role="alert">
+                                    <%= message %>
                                 </div>
-                                <div class="mb-3">
-                                    <label for="loginPassword" class="form-label">Password</label>
-                                    <input type="password" class="form-control" id="loginPassword" name="password"
-                                        required>
-                                </div>
-                                <button type="submit" class="btn btn-primary">Login</button>
-                            </form>
+                                <% } %>
+                                    <form action="/login" method="POST">
+                                        <div class="mb-3">
+                                            <label for="loginUsername" class="form-label">Username</label>
+                                            <input type="text" class="form-control" id="loginUsername" name="username"
+                                                required>
+                                        </div>
+                                        <div class="mb-3">
+                                            <label for="loginPassword" class="form-label">Password</label>
+                                            <input type="password" class="form-control" id="loginPassword"
+                                                name="password" required>
+                                        </div>
+                                        <button type="submit" class="btn btn-primary">Login</button>
+                                    </form>
                         </div>
                     </div>
                 </div>
@@ -31,7 +36,7 @@
                     <div class="card shadow">
                         <div class="card-body">
                             <h2 class="card-title mb-4">Signup</h2>
-                            <form action="/signup" method="POST">
+                            <form action="/signup" method="POST" onsubmit="return validatePass()">
                                 <div class="mb-3">
                                     <label for="signupUsername" class="form-label">Username</label>
                                     <input type="text" class="form-control" id="signupUsername" name="username"
@@ -63,3 +68,15 @@
             </div>
         </div>
     </section>
+
+    <script>
+        function validatePass() {
+            const password = document.getElementById('signupPassword').value;
+            const repeatPassword = document.getElementById('repeatPassword').value;
+            if (password !== repeatPassword) {
+                alert('Passwords do not match');
+                return false;
+            }
+            return true;
+        }
+    </script>

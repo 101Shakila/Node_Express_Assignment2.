@@ -42,19 +42,23 @@ const userCollection = new Schema({
     },
     firstName: {
         type: String,
-        required: true
+        required: true,
+        default: 'FName'
     },
     lastName: {
         type: String,
-        required: true
+        required: true,
+        default: 'LName'
     },
     licenseNumber: {
         type: String, //When it comes to HASHING - we need it to be string because hash function output is STRING.
-        required: true
+        required: true,
+        default: 'N/A'
     },
     age: {
         type: Number,
-        required: true
+        required: true,
+        default: 18
     },
     dob: {
         type: Date,

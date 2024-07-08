@@ -73,24 +73,82 @@ eApp.get('/', (req, res) => {
 
 // Login
 eApp.get('/login', (req, res) => {
-    res.render('login', { title: 'Login Page' });
+    res.render('login', { title: 'Login Page', message: '' });
 })
 
-// lOGIN post - here we will check if username exist in database and compare passwords with username from database.
+// lOGIN POST - here we will check if username exist in database and compare passwords with username from database.
 //async is not necessary BUT since we are using bcrypt.compare and user.findOne which are Asynchronous makes it cleaner code.
 eApp.post('/login', async (req, res) => {
     //try and catch combined with async and await makes error handling much easier/understanable
     try {
 
+        const username = req.body.username;
+        const password = req.body.password;
+        const user = await User.findOne({ username: username }); //find user with username from database - Key Value pairs
+        if (!user) {
+            return res.status(400).send('Invalid User');
+        }
+        //bcrypt.compare will compare the password from database with the password from the form
 
+        const passMatch = await bcrypt.compare(password, user.password)
+
+        if (!passMatch) {
+            return res.status(400).send('Invalid Password');
+        }
+        res.render('login', { title: 'Login Page', message: 'User successfully login!' });
     }
     catch (error) {
-        res.status(500).send('Internal Server Error at Login')
+        res.status(500).send("Internal Error at login!");
     }
+});
 
 
-})
+//SIGNUP POST - here we will check is the passwords are MATCHING and if the username already exists as we need unique usernames!
+//we have to use *await* to handle asynchronous operations properly
+eApp.post('/signup', async (req, res) => {
+    try {
+        const username = req.body.username;
+        const password = req.body.password;
+        const repeatPassword = req.body.repeatPassword;
+        const userType = req.body.userType;
 
+        const defaultDob = new Date('2000-01-01'); // Default Date of Birth
+
+        //first we will check if the password and repeated password is the same
+        if (password !== repeatPassword) {
+            res.render('login', { title: 'Login Page', message: 'Password does not MATCH!' });
+        }
+        //then we will check if the username already exists
+        const user = await User.findOne({ username: username });
+        if (user) {
+            res.render('login', { title: 'Login Page', message: 'Username already EXISTS' });
+        }
+        //we use save() to save a new document ( user in this case ) to the MongoDB database
+        const userAdd = new User({
+            username: username,
+            password: password,
+            userType: userType,
+            firstName: req.body.firstName || 'First Name', // Default values can be adjusted as needed
+            lastName: req.body.lastName || 'Last Name',
+            licenseNumber: req.body.licenseNumber || 'Unknown',
+            age: req.body.age || 18,
+            dob: req.body.dob || defaultDob,
+            carDetails: {
+                make: req.body.make || 'Make',
+                model: req.body.model || 'Model',
+                carYear: req.body.carYear || new Date().getFullYear(),
+                plateNumber: req.body.plateNumber || 'Plate Number'
+            }
+        });
+        console.log("okay whatever" + userAdd);
+        await userAdd.save();
+        res.render('login', { title: 'Login Page', message: 'SignUp Successful' });
+    }
+    catch (error) {
+        res.render('login', { title: 'Login Page', message: '' });
+        //res.status(500).send("Internal Error at signup!");
+    }
+});
 
 // Dashboard
 eApp.get('/dashboard', (req, res) => {
