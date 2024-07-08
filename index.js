@@ -76,6 +76,22 @@ eApp.get('/login', (req, res) => {
     res.render('login', { title: 'Login Page' });
 })
 
+// lOGIN post - here we will check if username exist in database and compare passwords with username from database.
+//async is not necessary BUT since we are using bcrypt.compare and user.findOne which are Asynchronous makes it cleaner code.
+eApp.post('/login', async (req, res) => {
+    //try and catch combined with async and await makes error handling much easier/understanable
+    try {
+
+
+    }
+    catch (error) {
+        res.status(500).send('Internal Server Error at Login')
+    }
+
+
+})
+
+
 // Dashboard
 eApp.get('/dashboard', (req, res) => {
     res.render('dashboard', { title: 'dashboard Page' });
@@ -114,7 +130,7 @@ eApp.get('/G', (req, res) => {
 
             .catch(err => {
                 console.log(err);
-                res.status(500).send('Internal Server xError')
+                res.status(500).send('Internal Server Error')
             });
     }
     else {
@@ -199,3 +215,5 @@ eApp.post('/g2', (req, res) => {
         });
 
 });
+
+

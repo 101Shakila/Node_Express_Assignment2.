@@ -26,6 +26,20 @@ const carInformationSchema = new Schema({
 
 
 const userCollection = new Schema({
+    username: {
+        type: String,
+        required: true,
+        unique: true
+    },
+    password: {
+        type: String,
+        required: true
+    },
+    userType: {
+        type: String,
+        required: true,
+        enum: ['Driver', 'Examiner', 'Admin'] // Predefined set of values that can be chosen for the fields value!
+    },
     firstName: {
         type: String,
         required: true
@@ -60,6 +74,10 @@ userCollection.pre('save', async function (callback) { //async makes the functio
         if (this.isModified('licenseNumber')) { // We need to check if licenseNumber has been modified and AVOID re-hashing it.
             const salt = await bcrypt.genSalt(10); //genSalt adds randomness to the encryption making it harder to hack. - await is used here to make sure to wait for async hash to complete.
             this.licenseNumber = await bcrypt.hash(this.licenseNumber, salt);
+        }
+        if (this.isModified('password')) {
+            const salt = await bcrypt.genSalt(10);
+            this.password = await bcrypt.hash(this.password, salt);
         }
         callback(); //callback is needed here to make sure the middleware stack continues and saves the data in the database.
     } catch (error) {
