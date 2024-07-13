@@ -1,6 +1,6 @@
 const express = require('express');
-const router = express.Router();
-const authController = require('../controllers/authController');
+const router = express.Router(); //Creates new router object - Helps with 
+const authController = require('../controllers/authController'); // Imports authenticator module
 
 router.get('/login', authController.loginPage);
 router.post('/login', authController.login);
