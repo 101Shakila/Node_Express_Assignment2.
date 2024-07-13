@@ -15,19 +15,23 @@
                             <h2 id="content-title">Personal Information</h2>
                             <div class="col-md-6">
                                 <label for="firstName" class="form-label">First Name</label>
-                                <input type="text" id="firstName" name="firstName" class="form-control">
+                                <input type="text" id="firstName" name="firstName" class="form-control"
+                                    value="<%= user.firstName %>">
                             </div>
                             <div class="col-md-6">
                                 <label for="lastName" class="form-label">Last Name</label>
-                                <input type="text" id="lastName" name="lastName" class="form-control">
+                                <input type="text" id="lastName" name="lastName" class="form-control"
+                                    value="<%= user.lastName %>">
                             </div>
                             <div class="col-md-6">
                                 <label for="licenseNumber" class="form-label">License Number</label>
-                                <input type="number" id="licenseNumber" name="licenseNumber" class="form-control">
+                                <input type="number" id="licenseNumber" name="licenseNumber" class="form-control"
+                                    value="<%= user.licenseNumber %>">
                             </div>
                             <div class="col-md-6">
                                 <label for="age" class="form-label">Age</label>
-                                <input type="number" id="age" name="age" class="form-control" min="16">
+                                <input type="number" id="age" name="age" class="form-control" min="16"
+                                    value="<%= user.age %>">
                             </div>
                             <div class="col-md-6">
                                 <label for="dob" class="form-label">DOB</label>
@@ -39,22 +43,26 @@
                             <h2 id="content-title">Car Information</h2>
                             <div class="col-md-6">
                                 <label for="make" class="form-label">Make</label>
-                                <input type="text" id="make" name="make" class="form-control">
+                                <input type="text" id="make" name="make" class="form-control"
+                                    value="<%= user.carDetails.make %>">
                             </div>
                             <div class="col-md-6">
                                 <label for="model" class="form-label">Model</label>
-                                <input type="text" id="model" name="model" class="form-control">
+                                <input type="text" id="model" name="model" class="form-control"
+                                    value="<%= user.carDetails.model %>">
                             </div>
                             <div class="col-md-6">
                                 <label for="carYear" class="form-label">Year</label>
-                                <input type="number" id="carYear" name="carYear" class="form-control" min="1886">
+                                <input type="number" id="carYear" name="carYear" class="form-control" min="1886"
+                                    value="<%= user.carDetails.carYear %>">
                             </div>
                             <div class="col-md-6">
                                 <label for="plateNumber" class="form-label">Plate Number</label>
-                                <input type="text" id="plateNumber" name="plateNumber" class="form-control">
+                                <input type="text" id="plateNumber" name="plateNumber" class="form-control"
+                                    value="<%= user.carDetails.plateNumber %>">
                             </div>
                         </div>
-                        <button type="submit" class="btn btn-secondary">SUBMIT</button>
+                        <button type="submit" class="btn btn-secondary">UPDATE</button>
                     </form>
                 </div>
     </section>

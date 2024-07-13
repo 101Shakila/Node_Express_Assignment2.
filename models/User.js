@@ -7,19 +7,23 @@ const bcrypt = require('bcrypt'); //Import bcrypt Library into our app - Helps h
 const carInformationSchema = new Schema({
     make: {
         type: String,
-        required: true
+        required: true,
+        default: 'Default'
     },
     model: {
         type: String,
-        required: true
+        required: true,
+        default: 'Default'
     },
     carYear: {
         type: Number,
-        required: true
+        required: true,
+        default: 0
     },
     plateNumber: {
         type: String, //Converted into string for flexibility.
-        required: true
+        required: true,
+        default: 'Default'
     }
 
 });
@@ -43,22 +47,22 @@ const userCollection = new Schema({
     firstName: {
         type: String,
         required: true,
-        default: 'FName'
+        default: 'Default'
     },
     lastName: {
         type: String,
         required: true,
-        default: 'LName'
+        default: 'Default'
     },
     licenseNumber: {
         type: String, //When it comes to HASHING - we need it to be string because hash function output is STRING.
         required: true,
-        default: 'N/A'
+        default: 'Default'
     },
     age: {
         type: Number,
         required: true,
-        default: 18
+        default: 0
     },
     dob: {
         type: Date,

@@ -3,31 +3,17 @@
     <section class="center-content">
         <h1>G PAGE</h1>
         <div class="gcontainer border border-4 p-4">
-            <form id="checkData" action="/g" method="GET" onsubmit="return validationCheck()">
-                <div class="mb-4">
-                    <h2 id="content-title">Enter License Number</h2>
-                    <div class="col-md-6">
-                        <input name="licenseNumber" type="text" class="form-control" required>
-                    </div>
-                </div>
+            <% if (isNewUser) { %>
+                <h2>Welcome, new user! Please complete your profile.</h2>
+                <a href="/g2" class="btn btn-primary">Go to G2 Page</a>
+                <% } else { %>
 
-                <button class="btn btn-secondary">SUBMIT</button>
-            </form>
-        </div>
-
-        <div class="gcontainer border border-4 p-4">
-            <div class="mb-4">
-                <div class="col-md-6">
-
-                    <% if (message) { %>
-                        <h2 id="content-title" style="color: rgb(123, 220, 58)">
-                            <%= message %>
-                        </h2>
-                        <% } %>
-                            <% if (goToG2) { %>
-                                <a href="/g2" class="btn btn-primary"
-                                    style="background-color: rgb(78, 137, 38); border-color: rgb(97, 168, 51); color: white;">Go
-                                    to G2 Page</a>
+                    <div class="mb-4">
+                        <div class="col-md-6">
+                            <% if (message) { %>
+                                <h2 id="content-title" style="color: rgb(123, 220, 58)">
+                                    <%= message %>
+                                </h2>
                                 <% } %>
                                     <% if (user) { %>
                                         <h2>User Information</h2>
@@ -67,54 +53,29 @@
                                             </div>
                                             <div class="mb-3">
                                                 <label for="plateNumber" class="form-label">Plate Number</label>
-                                                <input type="number" class="form-control" id="plateNumber"
+                                                <input type="text" class="form-control" id="plateNumber"
                                                     name="plateNumber" value="<%= user.carDetails.plateNumber %>">
                                             </div>
                                             <button type="submit" class="btn btn-secondary">UPDATE</button>
                                         </form>
                                         <% } %>
-                </div>
-            </div>
+                        </div>
+                    </div>
         </div>
+        <% } %>
+
     </section>
 
+
     <script>
-        //This is just to check the validation for license Number
-        function validationCheck() {
-            console.log("okay so it did go through validationxxx")
-            const licenseNumber = document.getElementsByName("licenseNumber")[0].value;
-            if (!licenseNumber.match(/^[a-zA-Z0-9]+$/)) { // Checks if the license number is alphanumeric
-                alert("License number should be alphanumeric.");
-                return false; // returning false stops form from being submitted
-            }
-            // This will allow form to be submitted which means it will be checked by server side.
-            console.log("okay so it did go through validation")
-            return true;
-        }
-
-
         function updateCheck() {
             const make = document.getElementById("make").value;
             const model = document.getElementById("model").value;
             const carYear = document.getElementById("carYear").value;
             const plateNumber = document.getElementById("plateNumber").value;
 
-
-            //after capturing the data from above we will validate each one of them
-            if (!make.match(/^[A-Za-z\s]{2,50}$/)) {
-                alert("Make should be alphabetic and between 2 to 50 characters.");
-                return false;
-            }
-            if (!model.match(/^[A-Za-z\s]{2,50}$/)) {
-                alert("Model should be alphabetic and between 2 to 50 characters.");
-                return false;
-            }
-            if (!carYear.match(/^\d{4}$/)) {
-                alert("Car year should be a 4-digit number.");
-                return false;
-            }
-            if (!plateNumber.match(/^[a-zA-Z0-9]+$/)) {
-                alert("Plate number should be alphanumeric.");
+            if (!make.match(/^[A-Za-z\s]{1,50}$/) || !model.match(/^[A-Za-z\s]{1,50}$/) || !carYear.match(/^\d{4}$/) || !plateNumber.match(/^[a-zA-Z0-9]+$/)) {
+                alert("Please provide valid inputs.");
                 return false;
             }
 
