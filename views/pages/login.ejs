@@ -1,6 +1,5 @@
 <%- include('../layout', { title: 'login Page' }) %>
 
-    <!-- EDIT THE LAYOUT AND COLORS-->
     <section class="center-content">
         <div class="container mt-5">
             <div class="row justify-content-center">
@@ -9,7 +8,7 @@
                         <%= message %>
                     </div>
                     <% } %>
-                        <!-- Login Form -->
+                        <!-- Login Section is over here -->
                         <div class="col-md-6 mb-4">
                             <div class="card shadow">
                                 <div class="card-body">
@@ -32,7 +31,7 @@
                             </div>
                         </div>
 
-                        <!-- Signup Form -->
+                        <!-- Signup Section is over here -->
                         <div class="col-md-6 mb-4">
                             <div class="card shadow">
                                 <div class="card-body">
@@ -71,6 +70,7 @@
     </section>
 
     <script>
+        //Here we will check to see if the password and repeat password is matching!
         function validatePass() {
             const password = document.getElementById('signupPassword').value;
             const repeatPassword = document.getElementById('repeatPassword').value;

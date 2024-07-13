@@ -15,6 +15,7 @@
                                     <%= message %>
                                 </h2>
                                 <% } %>
+                                    <!-- This is where the condition is set for if the user updated their default data or not in g2 page -->
                                     <% if (user) { %>
                                         <h2>User Information</h2>
                                         <p><strong>First Name:</strong>
@@ -68,6 +69,7 @@
 
 
     <script>
+        //The below function checks if the car details are matching the correct syntax for each variable!
         function updateCheck() {
             const make = document.getElementById("make").value;
             const model = document.getElementById("model").value;

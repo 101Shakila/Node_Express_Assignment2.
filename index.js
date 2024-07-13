@@ -3,7 +3,6 @@
 //Rushang Panchal - Foundation of express and and pathing seen in index.js
 //Shakila Samaradiwakara - Setup EJS files and layout design
 
-
 //Assignment 2
 //Alphin Tom - setup Datbase connection in index.js and made it connection works for both g and g2
 //Rushang Panchal - fixed g2 file for gathering new data to input into database
@@ -11,8 +10,9 @@
 
 //Assignment 3
 // MVC - Model View Controller - Seperate the application logic into three interconnected components.
-
-
+//Alphin Tom - Checked and updated index.js page, tested encryption via database & validation throughout application.
+//Rushang Panchal - Setup the conditions on the pages for the data being transfered
+//Shakila Samaradiwakara - Setup the MCV pattern & encryption - Which includes the controllers, middlewear, routes and models.
 
 //How to Run notes below!!!
 
@@ -34,7 +34,7 @@ const mongoose = require('mongoose'); //Import mongoose library
 const session = require('express-session'); //npm install express-session
 const MongoStore = require('connect-mongo'); //npm install connect-mongo
 const authRoutes = require('./routes/authRoutes'); //Import the routes we have setup in the routes folder
-const userRoutes = require('./routes/userRoutes');
+const userRoutes = require('./routes/userRoutes'); //Import the routes we have setup in the routes folder
 
 
 
@@ -52,12 +52,12 @@ mongoose.connect(URI)
         }))
     .catch(err => console.log("i guess its not running"));
 
-//Session is being used to manage user authentication based on the credentials stored in MongoDB
+//Session is being used to manage user authentication based on the credentials stored in MongoDB - 
 eApp.use(session({
     secret: 'shakila123', // Replace with your own secret key
-    resave: false,
-    saveUninitialized: false,
-    store: MongoStore.create({ mongoUrl: URI }),
+    resave: false, //Placing it false just means that we will only save the session IF we save
+    saveUninitialized: false, //Ensures that a session is not saved to the store unless it has been modified
+    store: MongoStore.create({ mongoUrl: URI }), //Session store thats used for MongoDB
     cookie: { secure: false } // Set to true if using https
 }));
 
@@ -72,7 +72,7 @@ eApp.set('views', path.join(__dirname, 'views/pages')) //this sets the directory
 eApp.use(express.static(path.join(__dirname, 'assets'))); //path.join(_dirname, 'public') = /Users/shakila/Canada/Assignment1/assets
 
 
-//Routes
+//Routes - We are basically telling express that to use these routes whenever we start a root path with '/'
 eApp.use('/', authRoutes);
 eApp.use('/', userRoutes);
 
@@ -82,16 +82,4 @@ eApp.use('/', userRoutes);
 eApp.get('/', (req, res) => {
     res.render('index', { title: 'Home Page', loggedIn: false });
 });
-
-// Login
-eApp.get('/login', (req, res) => {
-    res.render('login', { title: 'Login Page', message: '', loggedIn: false });
-})
-
-// Dashboard
-eApp.get('/dashboard', (req, res) => {
-    res.render('dashboard', { title: 'dashboard Page', loggedIn: false });
-})
-
-
 

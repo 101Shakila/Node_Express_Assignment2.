@@ -83,7 +83,7 @@
             //This will be used to check if the value is alphabetic and not Numerical
             const alphabeticalPattern = /^[A-Za-z\s]+$/;
 
-            //First we will check any of the fields are empty or not
+            //First we will check any of the fields are empty or not - as thats the minimal requirement
             if (!firstName || !lastName || !licenseNumber || !age || !dob || !make || !model || !carYear || !plateNumber) {
                 alert('All fields are required.');
                 return false;
@@ -93,7 +93,7 @@
                 alert('First Name, Last Name, Make, and Model must contain only letters and spaces.');
                 return false;
             }
-            //Just putting 1886 since its considered thats the year the first automobile was created.7
+            //Just putting 1886 since its considered thats the year the first automobile was created.
             if (parseInt(carYear) < 1886) {
                 alert('Car Year must be 1886 or later.');
                 return false;
